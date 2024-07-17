@@ -4,32 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller as BaseController;
 
-class StudentController extends Controller
-{
-    public function index()
-    {
-        $students = auth()->user()->students;
-        return view('students.index', compact('students'));
-    }
-
+class StudentController extends BaseController
+{    
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'subject' => 'required',
             'marks' => 'required|integer',
         ]);
 
-        $student = auth()->user()->students()->where('name', $request->name)->where('subject', $request->subject)->first();
-        
+        if ($validator->fails()) {
+            return redirect('home')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $student = auth()->user()?->students()->where('name', $request->name)->where('subject', $request->subject)->first();
+
         if ($student) {
             $student->update(['marks' => $student->marks + $request->marks]);
         } else {
-            auth()->user()->students()->create($request->all());
+            $data = $request->all();
+            $data['teacher_id'] = auth()->id();
+
+            auth()->user()->students()->create($data);
         }
 
-        return redirect()->route('students.index');
+        return redirect()->route('home');
     }
 
     public function update(Request $request, Student $student)

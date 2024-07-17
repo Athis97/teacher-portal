@@ -50,7 +50,7 @@ class Teacher extends Authenticatable
         return $this->hasMany(Student::class);
     }
 
-    public function setPasswordAttribute($value) {
-        return bcrypt($value);
-    }
+    // public function setPasswordAttribute($value) {
+    //     return bcrypt($value);
+    // }
 }
