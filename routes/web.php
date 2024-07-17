@@ -19,9 +19,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::resource('students', StudentController::class);
+
+    Route::post('student', [StudentController::class, 'store'])->name('students.store');
+    Route::put('student/{$student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('student/{$student}', [StudentController::class, 'destroy'])->name('students.destroy');
 });
