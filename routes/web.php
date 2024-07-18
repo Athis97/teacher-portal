@@ -24,7 +24,7 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::post('student', [StudentController::class, 'store'])->name('students.store');
-    Route::put('student/{$student}', [StudentController::class, 'update'])->name('students.update');
-    Route::delete('student/{$student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::post('students', [StudentController::class, 'store'])->name('students.store');
+    Route::put('students/{$id}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/{$id}', [StudentController::class, 'destroy'])->name('students.destroy');
 });
