@@ -39,6 +39,7 @@ class StudentController extends BaseController
 
     public function update(Request $request, Student $student)
     {
+        dd($request);
         $request->validate([
             'name' => 'required',
             'subject' => 'required',
