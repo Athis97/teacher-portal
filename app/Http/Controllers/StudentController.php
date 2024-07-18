@@ -35,7 +35,7 @@ class StudentController extends BaseController
             auth()->user()->students()->create($data);
         }
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Student created successfully.');
     }
 
     public function update(Request $request, Student $student)
@@ -55,13 +55,13 @@ class StudentController extends BaseController
 
         $student->update($request->all());
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Student updated successfully.');
     }
 
     public function destroy(Student $student)
     {
         $student->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Student deleted successfully.');
     }
 }

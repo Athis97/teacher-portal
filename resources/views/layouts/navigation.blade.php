@@ -3,7 +3,7 @@
         <div class="flex">
             <div class="flex justify-between h-16 w-full">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center w-48">
                     <x-application-logo />
                 </div>
                 <!-- Navigation Links -->
