@@ -20,7 +20,8 @@ class StudentController extends BaseController
         if ($validator->fails()) {
             return redirect('home')
                         ->withErrors($validator)
-                        ->withInput();
+                        ->withInput()
+                        ->with('method', 'POST');
         }
 
         $student = auth()->user()?->students()->where('name', $request->name)->where('subject', $request->subject)->first();
@@ -39,22 +40,28 @@ class StudentController extends BaseController
 
     public function update(Request $request, Student $student)
     {
-        dd($request);
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'subject' => 'required',
             'marks' => 'required|integer',
         ]);
 
+        if ($validator->fails()) {
+            return redirect('home')
+                        ->withErrors($validator)
+                        ->withInput()
+                        ->with('method', 'PUT');
+        }
+
         $student->update($request->all());
 
-        return redirect()->route('students.index');
+        return redirect()->route('home');
     }
 
     public function destroy(Student $student)
     {
         $student->delete();
 
-        return redirect()->route('students.index');
+        return redirect()->route('home');
     }
 }
