@@ -2,14 +2,34 @@
 
 @section('content')
     <div x-data="studentManager()">
-        <div class="container mx-auto md:max-w-5xl lg:max-w-7xl">
-            <div class="mt-8 pb-8">
-                @if (session('success'))
-                    <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" role="alert" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
-                        {{ session('success') }}
+        @if (session('success'))
+            <div class="fixed top-4 right-4 z-50" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 border border-gray-400"
+                    role="alert">
+                    <div
+                        class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11h2v2H9V7zm0 4h2v4H9v-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="sr-only">Success icon</span>
                     </div>
-                @endif
-
+                    <div class="ml-3 text-sm font-normal">{{ session('success') }}</div>
+                    <button type="button"
+                        class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                        aria-label="Close" @click="show = false">
+                        <span class="sr-only">Close</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        @endif
+        <div class="container mx-auto md:max-w-5xl lg:max-w-6xl">
+            <div class="mt-8 pb-8">
                 @empty($students->count())
                     <div class="my-8 rounded-lg border border-gray-200 bg-white px-12 py-10 shadow-lg">
                         <p class="text-center font-medium text-gray-500">No records found.</p>
@@ -38,7 +58,8 @@
                                     <tr class="border-t-2">
                                         <td class="px-4 py-3">
                                             <div class="flex items-center">
-                                                <img src="https://eu.ui-avatars.com/api/?uppercase=false&rounded=true&background=0ea5e9&color=fff&name={{ $student->name }}" alt="" srcset="" width="40px" height="40px" class="me-2">
+                                                <img src="https://eu.ui-avatars.com/api/?uppercase=false&rounded=true&background=0ea5e9&color=fff&name={{ $student->name }}"
+                                                    alt="" srcset="" width="40px" height="40px" class="me-2">
                                                 {{ $student->name }}
                                             </div>
                                         </td>
@@ -49,15 +70,18 @@
                                                 <x-slot name="trigger">
                                                     <div class="ms-1 flex justify-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-                                                            <path d="M0 10A10 10 0 1 0 10 0 10 10 0 0 0 0 10zm14.021-1.943-2.008 2.484L10 13.024l-2.01-2.483-2-2.484h8.033z" />
+                                                            <path
+                                                                d="M0 10A10 10 0 1 0 10 0 10 10 0 0 0 0 10zm14.021-1.943-2.008 2.484L10 13.024l-2.01-2.483-2-2.484h8.033z" />
                                                         </svg>
                                                     </div>
                                                 </x-slot>
 
                                                 <x-slot name="content">
-                                                    <x-dropdown-link x-on:click="editStudent({{ $student }})">{{ __('Edit') }}</x-dropdown-link>
+                                                    <x-dropdown-link
+                                                        x-on:click="editStudent({{ $student }})">{{ __('Edit') }}</x-dropdown-link>
 
-                                                    <x-dropdown-link x-on:click="confirmStudentDeletion({{ $student->id }})">{{ __('Delete') }}</x-dropdown-link>
+                                                    <x-dropdown-link
+                                                        x-on:click="confirmStudentDeletion({{ $student->id }})">{{ __('Delete') }}</x-dropdown-link>
                                                 </x-slot>
                                             </x-dropdown>
                                         </td>
@@ -81,40 +105,57 @@
                             <div class="mb-3">
                                 <x-input-label for="create_name" :value="__('Name')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                            viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2"
+                                                d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="create_name" class="mt-1 block w-full" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
+                                    <x-text-input id="create_name" class="mt-1 block w-full" type="text" name="name"
+                                        value="{{ old('name') }}" required autofocus autocomplete="name" />
                                 </div>
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
                             <div class="mb-3">
                                 <x-input-label for="create_subject" :value="__('Subject')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
                                                 d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="create_subject" class="mt-1 block w-full" type="text" name="subject" value="{{ old('subject') }}" required autofocus autocomplete="subject" />
+                                    <x-text-input id="create_subject" class="mt-1 block w-full" type="text"
+                                        name="subject" value="{{ old('subject') }}" required autofocus
+                                        autocomplete="subject" />
                                 </div>
                                 <x-input-error :messages="$errors->get('subject')" class="mt-2" />
                             </div>
                             <div class="mb-3">
                                 <x-input-label for="create_marks" :value="__('Mark')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z" />
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="create_marks" class="mt-1 block w-full" type="number" name="marks" value="{{ old('marks') }}" required autofocus autocomplete="marks" />
+                                    <x-text-input id="create_marks" class="mt-1 block w-full" type="number"
+                                        name="marks" value="{{ old('marks') }}" required autofocus
+                                        autocomplete="marks" />
                                 </div>
                                 <x-input-error :messages="$errors->get('marks')" class="mt-2" />
                             </div>
@@ -127,7 +168,8 @@
                 </x-modal>
 
                 <x-modal name="student-edit-form" :show="$errors->any() && session('method') == 'PUT'" focusable>
-                    <form id="StudentUpdateForm" method="POST" :action="`{{ route('students.update', '') }}/${student . id}`" class="px-16 py-10">
+                    <form id="StudentUpdateForm" method="POST"
+                        :action="`{{ route('students.update', '') }}/${student . id}`" class="px-16 py-10">
                         @csrf
                         @method('PUT')
 
@@ -135,40 +177,58 @@
                             <div class="mb-3">
                                 <x-input-label for="edit_name" :value="__('Name')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2"
+                                                d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="edit_name" class="mt-1 block w-full" type="text" name="name" value="{{ old('name') }}" x-model="student.name" required autofocus autocomplete="name" />
+                                    <x-text-input id="edit_name" class="mt-1 block w-full" type="text" name="name"
+                                        value="{{ old('name') }}" x-model="student.name" required autofocus
+                                        autocomplete="name" />
                                 </div>
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
                             <div class="mb-3">
                                 <x-input-label for="edit_subject" :value="__('Subject')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
                                                 d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="edit_subject" class="mt-1 block w-full" type="text" name="subject" value="{{ old('subject') }}" x-model="student.subject" required autofocus autocomplete="subject" />
+                                    <x-text-input id="edit_subject" class="mt-1 block w-full" type="text"
+                                        name="subject" value="{{ old('subject') }}" x-model="student.subject" required
+                                        autofocus autocomplete="subject" />
                                 </div>
                                 <x-input-error :messages="$errors->get('subject')" class="mt-2" />
                             </div>
                             <div class="mb-3">
                                 <x-input-label for="edit_marks" :value="__('Mark')" />
                                 <div class="flex">
-                                    <span class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
-                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z" />
+                                    <span
+                                        class="mt-1 inline-flex items-center rounded-l-sm border border-e-0 border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-300 dark:text-gray-400">
+                                        <svg class="h-6 w-6 text-gray-800" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z" />
                                         </svg>
 
                                     </span>
-                                    <x-text-input id="edit_marks" class="mt-1 block w-full" type="number" name="marks" value="{{ old('marks') }}" x-model="student.marks" required autofocus autocomplete="marks" />
+                                    <x-text-input id="edit_marks" class="mt-1 block w-full" type="number"
+                                        name="marks" value="{{ old('marks') }}" x-model="student.marks" required
+                                        autofocus autocomplete="marks" />
                                 </div>
                                 <x-input-error :messages="$errors->get('marks')" class="mt-2" />
                             </div>
@@ -181,7 +241,8 @@
                 </x-modal>
 
                 <x-modal name="confirm-student-deletion" focusable>
-                    <form id="StudentDeleteForm" method="POST" :action="`{{ route('students.destroy', '') }}/${studentId}`" class="px-16 py-10">
+                    <form id="StudentDeleteForm" method="POST"
+                        :action="`{{ route('students.destroy', '') }}/${studentId}`" class="px-16 py-10">
                         @csrf
                         @method('DELETE')
 
@@ -190,7 +251,9 @@
                                 Are you sure you want to delete this student record?
                             </div>
                             <div class="flex justify-center">
-                                <x-secondary-button x-on:click.prevent="$dispatch('close-modal', { 'name': 'confirm-student-deletion' })" class="ml-4">Cancel</x-secondary-button>
+                                <x-secondary-button
+                                    x-on:click.prevent="$dispatch('close-modal', { 'name': 'confirm-student-deletion' })"
+                                    class="ml-4">Cancel</x-secondary-button>
                                 <x-primary-button class="ml-4">Delete</x-primary-button>
                             </div>
                         </div>

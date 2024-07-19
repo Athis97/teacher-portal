@@ -18,7 +18,18 @@ class StudentFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'subject' => $this->faker->word,
+            'subject' => $this->faker->randomElement([
+                'Mathematics',
+                'Science',
+                'English',
+                'History',
+                'Geography',
+                'Physics',
+                'Chemistry',
+                'Biology',
+                'Computer Science',
+                'Physical Education'
+            ]),
             'marks' => $this->faker->numberBetween(0, 100),
             'teacher_id' => 1
         ];
