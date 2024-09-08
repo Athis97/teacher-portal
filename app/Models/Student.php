@@ -10,8 +10,12 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'subject', 'marks', 'teacher_id',
+        'name', 'teacher_id',
     ];
+
+    public function details() {
+        return $this->hasMany(StudentDetail::class, 'student_id');
+    }
 
     public function teacher()
     {
